@@ -1,6 +1,29 @@
+#install.packages("dplyr")
+#install_github("vqv/ggbiplot")
+library(tidyverse)
+library(reshape2)
+library(RColorBrewer)
+library(naniar)
+library(mice)
+library(plyr)
+library(readr)
+library(ggplot2)
+library(GGally)
+library(dplyr)
+library(mlbench)
+library(Rtsne)
+library(data.table)
+library(ggrepel)
+library(cluster)
+library(maptree)
+library(ggridges)        
+library(devtools)
+library(ggbiplot)
+library(factoextra)
+
 my.data <- read.csv("MoneyBall.csv")
 
-library(ggplot2)
+
 my.data %>% 
   select(-INDEX) %>% 
   gather(key = "Paramter", value) %>% 
@@ -14,11 +37,6 @@ my_data2 <- gather(my_data,
                    value = "arrest_estimate",
                    -state)
 
-install.packages("dplyr")
-library(tidyverse)
-library(reshape2)
-library(RColorBrewer)
-
 
 MissingCount <- my.data %>%
   select(-INDEX) %>%
@@ -29,18 +47,16 @@ MissingCount <- my.data %>%
   filter(value > 0) %>%
   rename("Missing_Fraction" = value)
 
-library(naniar)
+
 vis_miss(my.data)
 
-library(ggplot2)
 gg_miss_var(my.data, show_pct = TRUE) + labs(y = "Missing % of Data")
 
-library(RColorBrewer)
 nb.cols <- length(my.data)
 mycolors <- colorRampPalette(brewer.pal(8, "Set2"))(nb.cols)
 
 
-library(mice)
+
 droppeddata <-my.data %>% select(-TEAM_BATTING_HBP)
 droppeddata <-my.data %>% select(-INDEX)
 
@@ -67,12 +83,7 @@ pc.1 <- returns.pca$loadings[,1]
 pc.2 <- returns.pca$loadings[,2]
 
 
-library(plyr)
-library(readr)
-library(ggplot2)
-library(GGally)
-library(dplyr)
-library(mlbench)
+
 
 glimpse(completedData)
 
@@ -124,9 +135,7 @@ ggplot(norm.PCA, aes(label = VALUE)) +
   geom_text(aes(x= pc.norm.1,y= pc.norm.3,label= VALUE)) +
   xlim(-0.5,.5)
    
-library(devtools)
-install_github("vqv/ggbiplot")
-library(ggbiplot)
+
 ggbiplot(normed.pca) +
   labs(title = "Principal Component Dimensions")         
      
@@ -152,10 +161,6 @@ title('Total Variance Explained Plot')
        
  #write.csv(completedData,file="imputedMoneyball.csv")
 plot(normed.pca)
-library(cluster)
-library(maptree)
-library(ggridges)        
-
 
 
 clusterresults <- kmeans(norm.PCA[,2:3],4)
@@ -174,13 +179,11 @@ clusterresults$cluster
 
 norm.PCA.Cluster <- cbind(norm.PCA,clusterresults$cluster)
 
-library(factoextra) # clustering algorithms & visualization
 fviz_nbclust(norm.PCA[,-1], kmeans, method = "wss")
 
 
 #######################
-library(Rtsne)
-library(data.table)
+
 tsne_vis <- function( perplexity = 1, learning = 200, iterations = 500, cor) {
   
   set.seed(1)
@@ -195,7 +198,6 @@ tsne_vis <- function( perplexity = 1, learning = 200, iterations = 500, cor) {
     #theme(legend.position = "right")
 }
 
-library(ggrepel)
 corrs <-corrs[-1,-1]
 
 tsne.results<- tsne_vis(perplexity = 1, learning = 500, iterations = 10000, corrs)
