@@ -252,13 +252,3 @@ plot(data.test$Pred,data.test$TARGET_WINS)
 
 data.test$correct <- ifelse(abs(data.test$TARGET_WINS -data.test$Pred)>10,1,0)
 sum(data.test$correct)/nrow(data.test)
-
-
-set.seed(123)
-
-set.seed(123)
-
-
-
-
-
